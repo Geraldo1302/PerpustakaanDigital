@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Api\BukuController as ApiBukuController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Kelola\PeminjamanController as KelolaPeminjamanController;
@@ -114,12 +113,14 @@ Route::middleware('auth')->group(function () {
         ->middleware('permission:lihat-laporan-perpustakaan')
         ->name('laporan.index');
 
-    // ---- [Soal 1] Route RENTAN (sengaja, untuk audit keamanan) ----
-    // A2: SQL Injection
+    // ---- [Soal 1] Route audit keamanan ----
+    // A2: pencarian buku (diperbaiki pada Soal 2b -> query dengan binding)
     Route::get('/buku-cari', [BukuController::class, 'cari'])->name('buku.cari');
-    // A3: CSRF (penghapusan lewat GET)
-    Route::get('/buku/{buku}/hapus', [ApiBukuController::class, 'destroy'])->name('buku.hapus');
-    // A4: IDOR
+    // A3: [Soal 2c] route GET /buku/{buku}/hapus DIHAPUS; diganti route DELETE (token CSRF wajib)
+    Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])
+        ->middleware('permission:kelola-data-buku')
+        ->name('buku.destroy');
+    // A4: IDOR (ditutup pada Soal 4 dengan Policy)
     Route::get('/peminjaman/{id}', [PeminjamanController::class, 'show'])->name('peminjaman.show');
 });
 

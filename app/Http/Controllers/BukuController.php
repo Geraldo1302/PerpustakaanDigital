@@ -28,15 +28,27 @@ class BukuController extends Controller
     }
 
     /**
-     * [Soal 1 - A2] CELAH SQL INJECTION (sengaja, untuk praktikum).
-     * Nilai "judul" digabungkan langsung ke string SQL tanpa binding.
+     * [Soal 2b] Pencarian judul memakai query dengan binding (placeholder ?),
+     * sehingga nilai "judul" selalu diperlakukan sebagai data, bukan potongan SQL.
      */
     public function cari(Request $request)
     {
         $judul = $request->query('judul');
 
-        $hasil = DB::select("SELECT * FROM bukus WHERE judul = '$judul'");
+        $hasil = DB::select('SELECT * FROM bukus WHERE judul = ?', [$judul]);
 
         return response()->json($hasil);
+    }
+
+    /**
+     * [Soal 2c] Hapus buku lewat route DELETE (dilindungi token CSRF).
+     */
+    public function destroy(Buku $buku)
+    {
+        $judul = $buku->judul;
+        $buku->delete();
+
+        return redirect()->route('buku.index')
+            ->with('success', "Buku \"{$judul}\" berhasil dihapus.");
     }
 }

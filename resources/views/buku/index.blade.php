@@ -249,7 +249,7 @@
             </div>
         </div>
 
-        {{-- [Soal 1 - A1] CELAH XSS (sengaja): judul ditampilkan tanpa escaping memakai {!! !!} --}}
+        {{-- [Soal 2a] Judul ditampilkan dengan escaping Blade {{ }} (sebelumnya {!! !!} -> XSS) --}}
         <div class="panel">
             <div class="table-head">
                 <h3>Judul Buku Terbaru</h3>
@@ -273,11 +273,21 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $buku->kategori->nama ?? '-' }}</td>
-                                <td>{!! $buku->judul !!}</td>
+                                <td>{{ $buku->judul }}</td>
                                 <td>{{ $buku->penulis }}</td>
                                 <td>{{ $buku->tahun_terbit }}</td>
                                 <td class="aksi">
                                     <a href="{{ route('buku.show', $buku->id) }}" class="btn-aksi btn-detail">Detail</a>
+
+                                    {{-- [Soal 2c] Hapus lewat form DELETE + token CSRF (bukan tautan GET) --}}
+                                    @can('kelola-data-buku')
+                                        <form method="POST" action="{{ route('buku.destroy', $buku->id) }}" style="display:inline"
+                                              onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-aksi btn-hapus">Hapus</button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty
