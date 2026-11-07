@@ -23,9 +23,10 @@ Route::middleware(['web', 'auth'])->group(function () {
         ->names('api.buku');
 
     // Tambah / ubah / hapus data buku: admin & petugas
+    // [Soal 3] sebelumnya permission:kelola-data-buku, kini memakai Gate kelola-buku
     Route::apiResource('buku', BukuController::class)
         ->only(['store', 'update', 'destroy'])
-        ->middleware('permission:kelola-data-buku')
+        ->middleware('can:kelola-buku')
         ->names('api.buku');
 
     // Rekap Agregasi Data (laporan): admin & petugas

@@ -33,6 +33,16 @@ Route::middleware('auth')->group(function () {
     // Pengarah dashboard sesuai role
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
+    // ---- [Soal 3] Kelola buku (tambah, ubah, hapus): dijaga Gate "kelola-buku" ----
+    // Harus berada SEBELUM route /buku/{id} agar /buku/create tidak dianggap sebagai ID.
+    Route::middleware('can:kelola-buku')->group(function () {
+        Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create');
+        Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
+        Route::get('/buku/{buku}/edit', [BukuController::class, 'edit'])->name('buku.edit');
+        Route::put('/buku/{buku}', [BukuController::class, 'update'])->name('buku.update');
+        Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])->name('buku.destroy');
+    });
+
     // ---- Daftar & detail buku (admin, petugas, siswa) ----
     Route::middleware('permission:lihat-daftar-buku')->group(function () {
         Route::get('/buku', [BukuController::class, 'index'])
@@ -116,10 +126,7 @@ Route::middleware('auth')->group(function () {
     // ---- [Soal 1] Route audit keamanan ----
     // A2: pencarian buku (diperbaiki pada Soal 2b -> query dengan binding)
     Route::get('/buku-cari', [BukuController::class, 'cari'])->name('buku.cari');
-    // A3: [Soal 2c] route GET /buku/{buku}/hapus DIHAPUS; diganti route DELETE (token CSRF wajib)
-    Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])
-        ->middleware('permission:kelola-data-buku')
-        ->name('buku.destroy');
+    // A3: [Soal 2c] route GET /buku/{buku}/hapus DIHAPUS; diganti route DELETE (lihat blok kelola buku di atas)
     // A4: IDOR (ditutup pada Soal 4 dengan Policy)
     Route::get('/peminjaman/{id}', [PeminjamanController::class, 'show'])->name('peminjaman.show');
 });

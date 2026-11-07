@@ -136,6 +136,7 @@
     .btn-ubah  { background: #2563eb; }
     .btn-hapus { background: #dc2626; }
     .btn-aksi:hover { opacity: .85; transform: translateY(-1px); }
+    a.btn-aksi { display: inline-block; text-decoration: none; }
 
     /* ---------- Pagination ---------- */
     .pagination {
@@ -159,7 +160,7 @@
     <div class="container">
         <span>KOLEKSI PERPUSTAKAAN</span>
         <h2>Daftar Buku</h2>
-        <p>@can('kelola-data-buku')Kelola koleksi buku perpustakaan digital (data diambil melalui RESTful API).@else Jelajahi koleksi buku perpustakaan digital.@endcan</p>
+        <p>@can('kelola-buku')Kelola koleksi buku perpustakaan digital (data diambil melalui RESTful API).@else Jelajahi koleksi buku perpustakaan digital.@endcan</p>
     </div>
 </section>
 
@@ -169,7 +170,7 @@
         {{-- Area pesan (berhasil / gagal) --}}
         <div id="alert" class="alert" role="alert" hidden></div>
 
-        @can('kelola-data-buku')
+        @can('kelola-buku')
         {{-- FORMULIR TAMBAH / UBAH --}}
         <div class="panel">
             <h3 id="form-title">Tambah Buku</h3>
@@ -254,6 +255,9 @@
             <div class="table-head">
                 <h3>Judul Buku Terbaru</h3>
                 <p>10 buku terakhir (dirender oleh server)</p>
+                @can('kelola-buku')
+                    <a href="{{ route('buku.create') }}" class="btn btn-primary">Tambah Buku</a>
+                @endcan
             </div>
 
             <div class="table-wrap">
@@ -280,7 +284,8 @@
                                     <a href="{{ route('buku.show', $buku->id) }}" class="btn-aksi btn-detail">Detail</a>
 
                                     {{-- [Soal 2c] Hapus lewat form DELETE + token CSRF (bukan tautan GET) --}}
-                                    @can('kelola-data-buku')
+                                    @can('kelola-buku')
+                                        <a href="{{ route('buku.edit', $buku->id) }}" class="btn-aksi btn-ubah">Ubah</a>
                                         <form method="POST" action="{{ route('buku.destroy', $buku->id) }}" style="display:inline"
                                               onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
                                             @csrf
@@ -306,9 +311,9 @@
     const BUKU_URL   = "{{ url('/buku') }}";
     const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').content;
 
-    // Hanya admin & petugas (permission kelola-data-buku) yang boleh mengubah data.
+    // Hanya admin & petugas (permission kelola-buku) yang boleh mengubah data.
     // Ini hanya untuk tampilan; penegakan sebenarnya ada di server (middleware permission pada API).
-    const BISA_KELOLA = @json(auth()->user()->can('kelola-data-buku'));
+    const BISA_KELOLA = @json(auth()->user()->can('kelola-buku'));
 
     const el = {
         alert:   document.getElementById('alert'),
