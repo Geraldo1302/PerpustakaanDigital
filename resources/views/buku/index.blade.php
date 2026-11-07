@@ -249,7 +249,7 @@
             </div>
         </div>
 
-        {{-- [Soal 2a] Judul ditampilkan dengan escaping Blade {{ }} (sebelumnya {!! !!} -> XSS) --}}
+        {{-- [Soal 2a] Judul ditampilkan dengan escaping Blade (sebelumnya tanpa escaping, rentan XSS) --}}
         <div class="panel">
             <div class="table-head">
                 <h3>Judul Buku Terbaru</h3>
