@@ -127,7 +127,7 @@ Route::middleware('auth')->group(function () {
     // A2: pencarian buku (diperbaiki pada Soal 2b -> query dengan binding)
     Route::get('/buku-cari', [BukuController::class, 'cari'])->name('buku.cari');
     // A3: [Soal 2c] route GET /buku/{buku}/hapus DIHAPUS; diganti route DELETE (lihat blok kelola buku di atas)
-    // A4: IDOR (ditutup pada Soal 4 dengan Policy)
+    // A4: IDOR ditutup pada Soal 4 (PeminjamanPolicy@view dipanggil di PeminjamanController@show)
     Route::get('/peminjaman/{id}', [PeminjamanController::class, 'show'])->name('peminjaman.show');
 });
 
