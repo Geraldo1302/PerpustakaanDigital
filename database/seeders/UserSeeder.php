@@ -10,12 +10,16 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * Akun contoh untuk pengujian. Role ditetapkan oleh seeder (mekanisme berwenang),
- * bukan lewat formulir registrasi. Kata sandi semua akun: "password".
+ * bukan lewat formulir registrasi. Kata sandi akun siswa & petugas: "password".
+ * [Soal 5c] Kata sandi admin TIDAK lagi "password": diambil dari SEED_ADMIN_PASSWORD di .env.
  */
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        // [Soal 5c] Kata sandi admin bawaan diganti (bukan lagi "password").
+        $passwordAdmin = env('SEED_ADMIN_PASSWORD') ?: 'Adm1n!250441100040#Perpus';
+
         $akun = [
             ['name' => 'Admin Perpustakaan',  'email' => 'admin@perpustakaan.test',   'role' => 'admin',   'telp' => '081200000001'],
             ['name' => 'Petugas Perpustakaan', 'email' => 'petugas@perpustakaan.test', 'role' => 'petugas', 'telp' => '081200000002'],
@@ -32,6 +36,12 @@ class UserSeeder extends Seeder
                 ]
             );
             $user->email_verified_at ??= now();
+
+            // Terapkan kata sandi baru juga pada akun admin yang sudah terlanjur dibuat sebelumnya
+            if ($data['role'] === 'admin') {
+                $user->password = Hash::make($passwordAdmin);
+            }
+
             $user->save();
 
             $user->syncRoles([$data['role']]);

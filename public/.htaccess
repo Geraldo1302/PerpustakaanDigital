@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # [Soal 5b] Blokir akses ke berkas tersembunyi (.env, .git, dll), kecuali .well-known
+    RewriteRule (^|/)\.(?!well-known) - [F,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

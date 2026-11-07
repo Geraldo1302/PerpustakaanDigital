@@ -19,7 +19,7 @@ php artisan serve
 * **Tidak perlu `npm run build`**: gaya tambahan ada di `public/css/rbac.css` (dimuat langsung).
 * Jangan menjalankan `php artisan breeze:install` / `vendor:publish` Spatie lagi, karena akan menimpa/menggandakan file yang sudah disiapkan.
 
-### Akun contoh (hasil seeder — kata sandi semua: `password`)
+### Akun contoh (hasil seeder — kata sandi siswa & petugas: `password`; admin: lihat `SEED_ADMIN_PASSWORD` di `.env`)
 
 | Role    | Email                       |
 |---------|-----------------------------|

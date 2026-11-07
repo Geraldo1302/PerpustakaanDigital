@@ -1,6 +1,6 @@
 # Pengujian RBAC — Sistem Perpustakaan Digital
 
-Jalankan dulu `php artisan migrate --seed` dan `php artisan serve`. Kata sandi semua akun contoh: `password`.
+Jalankan dulu `php artisan migrate --seed` dan `php artisan serve`. Kata sandi akun siswa & petugas: `password`; kata sandi admin: nilai `SEED_ADMIN_PASSWORD` di `.env` (Soal 5c).
 
 Kolom **Hasil Aktual** sengaja dikosongkan: isi dengan hasil yang Anda amati (atau jalankan `php artisan test`, nama tes ada di kolom terakhir).
 

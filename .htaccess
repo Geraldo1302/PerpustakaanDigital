@@ -1,0 +1,10 @@
+# [Soal 5b] Jaga-jaga bila document root diarahkan ke folder proyek (bukan ke /public).
+# Semua berkas tersembunyi (.env, .git, ...) diblokir, sisanya diteruskan ke /public.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteRule (^|/)\.(?!well-known) - [F,L]
+
+    RewriteRule ^$ public/ [L]
+    RewriteRule (.*) public/$1 [L]
+</IfModule>

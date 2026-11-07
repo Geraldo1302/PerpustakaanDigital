@@ -131,10 +131,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/peminjaman/{id}', [PeminjamanController::class, 'show'])->name('peminjaman.show');
 });
 
-// [Soal 5a] ROUTE SEMENTARA untuk menguji halaman error saat APP_DEBUG=false (akan dihapus)
-Route::get('/uji-error', function () {
-    throw new \RuntimeException('Uji error Soal 5a - NIM 250441100040');
-});
-
 // Route autentikasi (register, login, logout, lupa/reset password)
 require __DIR__.'/auth.php';
