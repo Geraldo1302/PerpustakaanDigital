@@ -249,6 +249,45 @@
             </div>
         </div>
 
+        {{-- [Soal 1 - A1] CELAH XSS (sengaja): judul ditampilkan tanpa escaping memakai {!! !!} --}}
+        <div class="panel">
+            <div class="table-head">
+                <h3>Judul Buku Terbaru</h3>
+                <p>10 buku terakhir (dirender oleh server)</p>
+            </div>
+
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kategori</th>
+                            <th>Judul</th>
+                            <th>Penulis</th>
+                            <th>Tahun Terbit</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($bukus as $buku)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $buku->kategori->nama ?? '-' }}</td>
+                                <td>{!! $buku->judul !!}</td>
+                                <td>{{ $buku->penulis }}</td>
+                                <td>{{ $buku->tahun_terbit }}</td>
+                                <td class="aksi">
+                                    <a href="{{ route('buku.show', $buku->id) }}" class="btn-aksi btn-detail">Detail</a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="6" class="table-empty">Belum ada buku yang tersedia.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </section>
 

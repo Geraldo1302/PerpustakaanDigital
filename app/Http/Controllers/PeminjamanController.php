@@ -72,6 +72,17 @@ class PeminjamanController extends Controller
         return $this->tampilkan($user);
     }
 
+    /**
+     * [Soal 1 - A4] CELAH IDOR (sengaja, untuk praktikum).
+     * Data diambil hanya berdasarkan ID, tanpa memeriksa siapa pemiliknya.
+     */
+    public function show($id): View
+    {
+        $peminjaman = Peminjaman::with(['buku.kategori', 'anggota'])->findOrFail($id);
+
+        return view('peminjaman.show', compact('peminjaman'));
+    }
+
     private function tampilkan(User $pemilik): View
     {
         $semua = Peminjaman::with('buku.kategori')

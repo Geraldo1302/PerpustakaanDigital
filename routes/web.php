@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Api\BukuController as ApiBukuController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Kelola\PeminjamanController as KelolaPeminjamanController;
@@ -112,6 +113,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan', [LaporanController::class, 'index'])
         ->middleware('permission:lihat-laporan-perpustakaan')
         ->name('laporan.index');
+
+    // ---- [Soal 1] Route RENTAN (sengaja, untuk audit keamanan) ----
+    // A2: SQL Injection
+    Route::get('/buku-cari', [BukuController::class, 'cari'])->name('buku.cari');
+    // A3: CSRF (penghapusan lewat GET)
+    Route::get('/buku/{buku}/hapus', [ApiBukuController::class, 'destroy'])->name('buku.hapus');
+    // A4: IDOR
+    Route::get('/peminjaman/{id}', [PeminjamanController::class, 'show'])->name('peminjaman.show');
 });
 
 // Route autentikasi (register, login, logout, lupa/reset password)
