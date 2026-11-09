@@ -27,7 +27,8 @@ class KategoriSeeder extends Seeder
         ];
 
         foreach ($kategoris as $id => $nama) {
-            Kategori::updateOrCreate(['id' => $id], ['nama' => $nama]);
+            $kategori = Kategori::find($id) ?? new Kategori();
+            $kategori->forceFill(['id' => $id, 'nama' => $nama])->save();
         }
     }
 }
