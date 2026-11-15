@@ -28,4 +28,9 @@ foreach (['APP_STORAGE', 'VIEW_COMPILED_PATH', 'APP_SERVICES_CACHE', 'APP_PACKAG
     putenv("$key={$_ENV[$key]}");
 }
 
+// Pastikan helper url() & route() Laravel tidak menyisipkan prefix "/api"
+$_SERVER['SCRIPT_NAME'] = '/index.php';
+$_SERVER['SCRIPT_FILENAME'] = __DIR__ . '/../public/index.php';
+$_SERVER['PHP_SELF'] = '/index.php';
+
 require __DIR__ . '/../public/index.php';
