@@ -6,6 +6,7 @@ use App\Models\Peminjaman;
 use App\Models\User;
 use App\Policies\PeminjamanPolicy;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+
         // [Soal 3] Aturan pengelolaan buku dipusatkan pada satu Gate:
         // hanya role admin dan petugas yang boleh menambah, mengubah, dan menghapus buku.
         Gate::define('kelola-buku', function (User $user): bool {

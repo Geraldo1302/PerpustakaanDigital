@@ -127,4 +127,5 @@ class BukuController extends Controller
 
         return response()->json(['message' => 'Buku berhasil dihapus'], 200);
     }
+
 }
