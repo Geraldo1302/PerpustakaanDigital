@@ -5,8 +5,7 @@
 @section('content')
 <section class="auth-wrap">
     <div class="auth-card">
-        <h2>Masuk</h2>
-        <p>Silakan login untuk mengakses Perpustakaan Digital.</p>
+        <h2>Login _25-040</h2>
 
         <form method="POST" action="{{ route('login') }}" novalidate>
             @csrf
